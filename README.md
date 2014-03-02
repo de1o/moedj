@@ -1,6 +1,5 @@
-Project MoePad
+Project MoePad [![Build Status](https://travis-ci.org/deloeating/moedj.png?branch=master)](https://travis-ci.org/deloeating/moedj)
 ====
-[![Build Status](https://travis-ci.org/deloeating/MoeDj.png?branch=master)](https://travis-ci.org/deloeating/MoeDj)
 
 本程序用于支持@萌娘百科的更（平）新（板）姬在[新浪微博][1]的自动更新\_(:з”∠)\_
 
