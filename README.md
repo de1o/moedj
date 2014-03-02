@@ -12,3 +12,4 @@ License: MIT
 
 [1]: http://weibo.com/moegirlwiki
 [2]: https://github.com/deloeating/MoeDj/blob/master/docs/Install.md
+
