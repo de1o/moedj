@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}verify{% endblock %}
+
+{% block content %}
+<div class="content">
+
+<form class="form_verify nice_box" action="/verify/" method="post">
+{% csrf_token %}
+<p>勾选允许刷出的条目后点击提交</p>
+{% for unverified_item in unverified_items %}
+<div class="span2">
+<input class="checkbox" type="checkbox" name="{{ unverified_item }}" />
+{{ unverified_item }}
+</div>
+
+{% endfor %}
+
+
+<br/>
+<div class="clearfix"></div>
+<input class="btn-success btn mid_btn" type="submit" value="提交"/>
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,114 @@
+#area {
+	margin-top: 10px;
+}
+
+.inlinelabel {
+	display: inline;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+
+.funcbtn {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.error_list {
+	margin-bottom: 10px;
+	color: red;
+}
+
+#mpconfig p {
+	margin-left: 30px;
+}
+
+
+
+.mid_btn {
+	width: 150px;
+	margin-left: 370px;
+	margin-top: 50px;
+}
+
+.form_verify {
+	width: 800px;
+}
+
+.nice_box {
+	background-color: #fff;
+	border: 1px solid #e5e5e5;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	padding: 19px 29px 10px;
+	margin: 0 auto 20px;
+}
+
+body {
+	background: #f5f5f5;
+}
+
+.checkbox input {
+	margin-bottom: 10px;
+}
+
+.side_box {
+	background-color: #fff;
+	border: 1px solid #e5e5e5;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	padding: 10px;
+	margin: 10px;
+	float: left;
+	width: 240px;
+}
+
+.side_box .btn {
+	margin-left: 20px;
+}
+
+.px20 {
+	float: left;
+	width: 20px;
+	height: 100px;
+}
+
+.bootstrap-tagsinput {
+	width: 100%;
+}
+
+.bootstrap-tagsinput input {
+	width: 75px !important;
+}
+
+
+.item_node {
+	font-size: 12px;
+	line-height: 12px;
+	padding: 4px 10px 4px 10px;
+	margin: 0px 5px 5px 0px;
+	border-radius: 4px;
+	display: inline-block;
+
+	background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(50%,#f3f3f3), color-stop(51%,#ededed), color-stop(100%,#ffffff));
+    background: -webkit-linear-gradient(top, #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%);
+    background: -o-linear-gradient(top, #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%);
+    background: linear-gradient(top, #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 );
+
+    border: 1px solid #e5e5e5;
+}
+
+
+.item_node [data-role="delete"]{
+	cursor: pointer;
+}
+
+.item_node [data-role="delete"]:after {
+	content: "x";
+}
+
+
+

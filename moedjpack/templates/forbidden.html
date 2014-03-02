@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}禁止关键字{% endblock %}
+
+{% block content %}
+
+<div id="forbidden_keywords" class="nice_box">
+
+{% for keyword in forbiddens %}
+
+    <div class="item_node">
+    <span>
+        {{keyword}}
+    </span>
+    <span data-role="delete">
+    </span>
+    </div>
+{% endfor %}
+
+<form id="add-forbiddens" action="" method="post">
+
+    {%csrf_token%}
+    {{form}}
+    <br/>
+    <input class="btn-success btn span1 " type="submit" value="提交"/>
+</form>
+
+
+</div>
+
+{% endblock %}
+
+
+{% block tailscript %}
+
+<script type = "text/javascript" >
+$(document).ready(function() {
+    $(".item_node").on('click', '[data-role=delete]', function(event){
+        var item_name = $.trim($(this).parent().text());
+        console.log(item_name);
+        $.ajax({
+            type: "DELETE",
+            url: "/forbidden_item/" + item_name + "/",
+        }).done($.proxy(function(msg){
+            console.log("succ");
+            $(this).parent().fadeOut();
+        }, this)).fail(function(msg){
+            console.log("delete forbidden item failed");
+        });
+    });
+});
+
+
+
+</script>
+{% endblock %}
