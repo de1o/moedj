@@ -34,19 +34,19 @@ class PyTest(TestCommand):
 
 setup(
     name='moedj',
-    version='0.4.5',
+    version='0.5.0',
     url='https://github.com/deloeating/moedj',
     license='MIT',
     author='delo',
     tests_require=['pytest'],
     install_requires=[
-        'APScheduler>=2.1.0',
         'BeautifulSoup>=3.2.1',
         'redis>=2.8.0',
         'pytz>=2012d',
         'Django>=1.5.1',
         'pysqlite>=2.6.3',
         'requests>=2.2.1',
+        'celery>=3.1.9',
         ],
     cmdclass={'test': PyTest},
     author_email='deloeating@gmail.com',
