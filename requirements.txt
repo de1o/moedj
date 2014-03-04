@@ -1,7 +1,7 @@
-APScheduler>=2.1.0
 BeautifulSoup==3.2.1
 requests==2.2.1
 redis>=2.8.0
 Django>=1.5.1
 pysqlite>=2.6.3
 pytz>=2012d
+celery>=3.1.9
