@@ -48,10 +48,11 @@ def index(request):
 def forbidden_proc(request):
     if request.method == 'POST':
         forbidden_keywords = request.POST['keywords'].split(',')
+        forbidden_keywords = set(forbidden_keywords).remove("")
         for keyword in forbidden_keywords:
-            rs.lpush(FORBIDDENS, keyword)
+            rs.sadd(FORBIDDENS, keyword)
     form = ForbiddenForm()
-    forbidden_keywords = rs.lrange(FORBIDDENS, 0, -1)
+    forbidden_keywords = rs.smembers(FORBIDDENS)
     return render(request, "forbidden.html",
                   {"form": form, "forbiddens": forbidden_keywords})
 
@@ -59,7 +60,16 @@ def forbidden_proc(request):
 @csrf_exempt
 @login_required
 def forbidden_item(request, item):
-    return HttpResponse(json.dumps({"hello": "world"}), content_type="application/json")
+    if request.method == "DELETE":
+        try:
+            rs.srem(FORBIDDENS, item)
+            status = 'ok'
+        except:
+            status = 'error'
+    else:
+        status = 'not implement'
+    return HttpResponse(json.dumps({"status": status}),
+                        content_type="application/json")
 
 
 # def verify(request):

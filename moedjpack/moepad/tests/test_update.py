@@ -24,17 +24,17 @@ def test_getItemCategories():
 
 
 def test_filterForbiddenItems():
-    rs.lpush(FORBIDDENS, u"神原骏河".encode('utf-8'))
-    rs.lpush(FORBIDDENS, u"R18".encode('utf-8'))
-    rs.lpush(FORBIDDENS, u"R-18".encode('utf-8'))
+    rs.sadd(FORBIDDENS, u"神原骏河".encode('utf-8'))
+    rs.sadd(FORBIDDENS, u"R18".encode('utf-8'))
+    rs.sadd(FORBIDDENS, u"R-18".encode('utf-8'))
 
     assert not update.filterForbiddenItems(u"Ahe颜")
     assert not update.filterForbiddenItems(u"神原骏河")
     assert update.filterForbiddenItems(u"猫物语")
 
-    rs.lpop(FORBIDDENS)
-    rs.lpop(FORBIDDENS)
-    rs.lpop(FORBIDDENS)
+    rs.srem(FORBIDDENS, u"神原骏河".encode('utf-8'))
+    rs.srem(FORBIDDENS, u"R18".encode('utf-8'))
+    rs.srem(FORBIDDENS, u"R-18".encode('utf-8'))
 
 
 def test_filterExistedItems():

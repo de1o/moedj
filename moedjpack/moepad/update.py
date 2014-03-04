@@ -79,7 +79,7 @@ def getImage(link):
 
 
 def filterForbiddenItems(that):
-    forbiddenKeys = rs.lrange(FORBIDDENS, 0, -1)
+    forbiddenKeys = rs.smembers(FORBIDDENS)
     for key in forbiddenKeys:
         if key.decode('utf-8') in that:
             return False
