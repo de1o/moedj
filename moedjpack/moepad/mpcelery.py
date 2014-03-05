@@ -15,7 +15,7 @@ CELERYBEAT_SCHEDULE = {
     },
     'update-every-20-mins': {
         'task': 'moedjpack.moepad.mptask.updateitem',
-        'schedule': crontab(minute='5,25,45'),
+        'schedule': crontab(minute='*'),
         'args': None,
     },
     # 'test': {
@@ -32,7 +32,7 @@ CELERYBEAT_SCHEDULE = {
 
 CELERY_TIMEZONE = 'UTC'
 
-app = Celery('moedjpack.moepad', broker='redis://localhost//',
+app = Celery('moedjpack.moepad', broker='redis://localhost/1',
              include=['moedjpack.moepad.mptask'])
 app.conf.update(CELERYBEAT_SCHEDULE=CELERYBEAT_SCHEDULE, CELERY_TIMEZONE=CELERY_TIMEZONE)
 

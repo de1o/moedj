@@ -198,6 +198,7 @@ class SendItem(object):
         super(SendItem, self).__init__()
         self.ItemTobeSendKey = getItemTobeSend()
         if not self.ItemTobeSendKey:
+            setattr(self, 'ItemTobeSend', None)
             logger.info("No item to be send")
             return None
         self.ItemTobeSend = self.ItemTobeSendKey.split(':')[-1]
@@ -214,6 +215,8 @@ class SendItem(object):
             token['expires_in'])
 
     def sendRoutine(self):
+        if not self.ItemTobeSend:
+            return None
         try:
             self.send()
             self.postsend()

@@ -2,7 +2,7 @@
 *.pyc
 *.log
 mpconfig.*
-MoePad.db
+*.db
 .idea
 tmp.jpg
 todo.md
