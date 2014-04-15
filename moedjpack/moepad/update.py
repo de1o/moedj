@@ -125,13 +125,13 @@ def autoVerifyExpiredItems():
 def getItemTobeSend():
     new_items = rs.keys(NEWITEM+"*")
     if new_items:
-        return new_items[0]
+        return NEWITEM, new_items[0]
 
     edited_items = rs.keys(EDITED+"*")
     if edited_items:
-        return edited_items[0]
+        return EDITED, edited_items[0]
 
-    return None
+    return None, None
 
 
 class UpdateItems(object):
@@ -196,12 +196,12 @@ class UpdateItems(object):
 class SendItem(object):
     def __init__(self):
         super(SendItem, self).__init__()
-        self.ItemTobeSendKey = getItemTobeSend()
+        prefix, self.ItemTobeSendKey = getItemTobeSend()
         if not self.ItemTobeSendKey:
             setattr(self, 'ItemTobeSend', None)
             logger.info("No item to be send")
             return None
-        self.ItemTobeSend = self.ItemTobeSendKey.split(':')[-1]
+        self.ItemTobeSend = self.ItemTobeSendKey.lstrip(prefix)
         self.getWeiboApi()
 
     def getWeiboApi(self):
