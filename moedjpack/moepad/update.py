@@ -30,7 +30,7 @@ def getItemCategories(title):
         # category may not exist
         categories = []
 
-    categories = [c['title'].strip('Category:') for c in categories]
+    categories = [c['title'].partition('Category:')[2] for c in categories]
     return categories
 
 
@@ -103,6 +103,17 @@ def filterExistedItems(that):
     return True
 
 
+def filterRedirectedItems(that):
+    url = queryRedirectUrl % that.encode("utf-8")
+    r = requests.get(url)
+    rjson = json.loads(r.text)
+    try:
+        logger.info("redirected item: %s" % rjson['query']['redirects'][0]['from'].encode('utf-8'))
+        return False
+    except KeyError:
+        return True
+
+
 def verifyingKeyExpired(verifyingKey):
     expire_time = rs.zscore(VERIFYING_SET, verifyingKey)
     if not expire_time:
@@ -122,7 +133,28 @@ def autoVerifyExpiredItems():
             rs.set(NEWITEM+verifyingKey, verifyingKey, VERIFIED_EXPIRE)
 
 
+def item_deleted(that):
+    url = queryIfExistUrl % that.encode('utf-8')
+    r = requests.get(url)
+    rjson = json.loads(r.text)
+    try:
+        rjson['query']['pages']['-1']['missing']
+        return True
+    except KeyError:
+        return False
+
+
+def cleanDeletedNewItems():
+    new_items = rs.keys(NEWITEM+"*")
+    for item in new_items:
+        title = item.partition(NEWITEM)[2]
+        if item_deleted(title.decode('utf-8')):
+            logger.info("check deleted: %s" % title)
+            rs.delete(item)
+
+
 def getItemTobeSend():
+    cleanDeletedNewItems()
     new_items = rs.keys(NEWITEM+"*")
     if new_items:
         return NEWITEM, new_items[0]
@@ -138,7 +170,8 @@ class UpdateItems(object):
 
     filters = [
         filterForbiddenItems,
-        filterExistedItems, ]
+        filterExistedItems,
+        filterRedirectedItems, ]
 
     def __init__(self, mins=20):
         super(UpdateItems, self).__init__()
@@ -151,6 +184,7 @@ class UpdateItems(object):
             self.filter_valid()
             self.storeValidItems()
             autoVerifyExpiredItems()
+            cleanDeletedNewItems()
         except:
             logger.info(traceback.format_exc())
 
@@ -201,7 +235,7 @@ class SendItem(object):
             setattr(self, 'ItemTobeSend', None)
             logger.info("No item to be send")
             return None
-        self.ItemTobeSend = self.ItemTobeSendKey.lstrip(prefix)
+        self.ItemTobeSend = self.ItemTobeSendKey.partition(prefix)[2]
         self.getWeiboApi()
 
     def getWeiboApi(self):

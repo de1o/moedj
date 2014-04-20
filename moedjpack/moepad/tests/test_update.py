@@ -37,6 +37,11 @@ def test_filterForbiddenItems():
     rs.srem(FORBIDDENS, u"R-18".encode('utf-8'))
 
 
+def test_filterRedirectedItems():
+    assert not update.filterRedirectedItems(u"百合(消歧义)")
+    assert update.filterRedirectedItems(u"NTR")
+
+
 def test_filterExistedItems():
     _deletePrefix(NEWITEM)
     _deletePrefix(EDITED)
@@ -99,17 +104,40 @@ def test_getItemTobeSend():
     result = update.getItemTobeSend()
     assert not (result[1])
 
-
     # 1. test when new items not exist, edited item exist
     rs.set(EDITED+"edited1", "edited1")
     rs.set(EDITED+"edited2", "edited2")
     assert update.getItemTobeSend()[1] in [EDITED+"edited1", EDITED+"edited2"]
 
-    # 2. test when new items exist
+    # 2. test when new items exist but is deleted
     rs.set(NEWITEM+"newitem1", "newitem1")
     rs.set(NEWITEM+"newitem2", "newitem2")
-    assert update.getItemTobeSend()[1] in [NEWITEM+"newitem1", NEWITEM+"newitem2"]
+    assert update.getItemTobeSend()[1] in [EDITED+"edited2", EDITED+"edited1"]
+
+    # 3. test when new items existed and existed in mb web pages
+    rs.set(NEWITEM+"NTR", "NTR")
+    rs.set(NEWITEM+"百合", "百合")
+    assert update.getItemTobeSend()[1] in [NEWITEM+"NTR", NEWITEM+"百合"]
 
     _deletePrefix(EDITED)
+    _deletePrefix(NEWITEM)
+
+
+def test_item_deleted():
+    assert update.item_deleted("gjlsjirjl")
+    assert not update.item_deleted("NTR")
+
+
+def test_cleanDeletedNewItems():
+    rs.set(NEWITEM+"NotExisted", "fjslfs")
+    rs.set(NEWITEM+"NTR", "BTR")
+    rs.set(NEWITEM+"百合", "百合")
+
+    update.cleanDeletedNewItems()
+
+    assert rs.get(NEWITEM+"NTR")
+    assert rs.get(NEWITEM+"百合")
+    assert not rs.get(NEWITEM+"NotExisted")
+
     _deletePrefix(NEWITEM)
 

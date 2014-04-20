@@ -19,3 +19,5 @@ EDITED_EXPIRE = 24*3600     # 24 hours
 # according to user configuration
 SENT_EXPIRE = int(MPConf.sameItemInterval)*3600
 queryCategoryUrl = "http://zh.moegirl.org/api.php?format=json&action=query&prop=categories&titles=%s"
+queryRedirectUrl = "http://zh.moegirl.org/api.php?format=json&action=query&prop=info&redirects&titles=%s"
+queryIfExistUrl = "http://zh.moegirl.org/api.php?format=json&action=query&prop=info&titles=%s"
