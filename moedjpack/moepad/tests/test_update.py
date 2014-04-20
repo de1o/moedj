@@ -96,17 +96,19 @@ def test_getItemTobeSend():
     # 0. test no item exist in either side
     _deletePrefix(EDITED)
     _deletePrefix(NEWITEM)
-    assert not update.getItemTobeSend()
+    result = update.getItemTobeSend()
+    assert not (result[1])
+
 
     # 1. test when new items not exist, edited item exist
     rs.set(EDITED+"edited1", "edited1")
     rs.set(EDITED+"edited2", "edited2")
-    assert update.getItemTobeSend() in [EDITED+"edited1", EDITED+"edited2"]
+    assert update.getItemTobeSend()[1] in [EDITED+"edited1", EDITED+"edited2"]
 
     # 2. test when new items exist
     rs.set(NEWITEM+"newitem1", "newitem1")
     rs.set(NEWITEM+"newitem2", "newitem2")
-    assert update.getItemTobeSend() in [NEWITEM+"newitem1", NEWITEM+"newitem2"]
+    assert update.getItemTobeSend()[1] in [NEWITEM+"newitem1", NEWITEM+"newitem2"]
 
     _deletePrefix(EDITED)
     _deletePrefix(NEWITEM)

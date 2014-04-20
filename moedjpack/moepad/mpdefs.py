@@ -12,8 +12,8 @@ FORBIDDENS = "ForbiddenItems"
 # than the score (which represent items' expiry time) in zset, so the
 # verifying items can be moved to verified item list before it's infomation
 # disappeared by lifetime expired
-VERIFYING_EXPIRE = 25*3600  # 24 hours
-VERIFYING_ZSET_SCORE = 24*3600
+VERIFYING_EXPIRE = 2*3600  # 2 hours
+VERIFYING_ZSET_SCORE = 3600
 VERIFIED_EXPIRE = 24*3600   # 24 hours
 EDITED_EXPIRE = 24*3600     # 24 hours
 # according to user configuration
