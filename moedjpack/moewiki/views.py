@@ -46,11 +46,14 @@ def index(request):
 
 @login_required
 def forbidden_proc(request):
+    print request.GET
     if request.method == 'POST':
         forbidden_keywords = request.POST['keywords'].split(',')
-        forbidden_keywords = set(forbidden_keywords).remove("")
-        for keyword in forbidden_keywords:
-            rs.sadd(FORBIDDENS, keyword)
+        f_set = set(forbidden_keywords)
+        f_set.discard("")
+        if f_set:
+            for keyword in f_set:
+                rs.sadd(FORBIDDENS, keyword)
     form = ForbiddenForm()
     forbidden_keywords = rs.smembers(FORBIDDENS)
     return render(request, "forbidden.html",
