@@ -105,14 +105,14 @@ def test_getItemTobeSend():
     assert not (result[1])
 
     # 1. test when new items not exist, edited item exist
-    rs.set(EDITED+"edited1", "edited1")
-    rs.set(EDITED+"edited2", "edited2")
-    assert update.getItemTobeSend()[1] in [EDITED+"edited1", EDITED+"edited2"]
+    rs.set(EDITED+"百合", "百合")
+    rs.set(EDITED+"佐天泪子", "佐天泪子")
+    assert update.getItemTobeSend()[1] in [EDITED+"百合", EDITED+"佐天泪子"]
 
     # 2. test when new items exist but is deleted
     rs.set(NEWITEM+"newitem1", "newitem1")
     rs.set(NEWITEM+"newitem2", "newitem2")
-    assert update.getItemTobeSend()[1] in [EDITED+"edited2", EDITED+"edited1"]
+    assert update.getItemTobeSend()[1] in [EDITED+"佐天泪子", EDITED+"百合"]
 
     # 3. test when new items existed and existed in mb web pages
     rs.set(NEWITEM+"NTR", "NTR")
@@ -133,11 +133,28 @@ def test_cleanDeletedNewItems():
     rs.set(NEWITEM+"NTR", "BTR")
     rs.set(NEWITEM+"百合", "百合")
 
-    update.cleanDeletedNewItems()
+    update.cleanDeletedItemsByPrefix(NEWITEM)
 
     assert rs.get(NEWITEM+"NTR")
     assert rs.get(NEWITEM+"百合")
     assert not rs.get(NEWITEM+"NotExisted")
 
     _deletePrefix(NEWITEM)
+
+
+def test_cleanDeletedEditedItems():
+    rs.set(EDITED+"NotExisted", "fjslfs")
+    rs.set(EDITED+"NTR", "BTR")
+    rs.set(EDITED+"百合", "百合")
+
+    update.cleanDeletedItemsByPrefix(EDITED)
+
+    assert rs.get(EDITED+"NTR")
+    assert rs.get(EDITED+"百合")
+    assert not rs.get(EDITED+"NotExisted")
+
+
+def test_get_last_editor_name():
+    assert u"红魔狗头人" == update.get_last_editor_name("义妹")
+
 

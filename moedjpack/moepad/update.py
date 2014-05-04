@@ -144,17 +144,22 @@ def item_deleted(that):
         return False
 
 
-def cleanDeletedNewItems():
-    new_items = rs.keys(NEWITEM+"*")
-    for item in new_items:
-        title = item.partition(NEWITEM)[2]
+def cleanDeletedItemsByPrefix(prefix):
+    items = rs.keys(prefix+"*")
+    for item in items:
+        title = item.partition(prefix)[2]
         if item_deleted(title.decode('utf-8')):
-            logger.info("check deleted: %s" % title)
+            logger.info('check deleted: %s, %s' % (prefix, title))
             rs.delete(item)
 
 
+def cleanDeletedItems():
+    cleanDeletedItemsByPrefix(NEWITEM)
+    cleanDeletedItemsByPrefix(EDITED)
+
+
 def getItemTobeSend():
-    cleanDeletedNewItems()
+    cleanDeletedItems()
     new_items = rs.keys(NEWITEM+"*")
     if new_items:
         return NEWITEM, new_items[0]
@@ -164,6 +169,23 @@ def getItemTobeSend():
         return EDITED, edited_items[0]
 
     return None, None
+
+
+def get_last_editor_name(item):
+    url = queryLastRevisionEditor % item
+    r = requests.get(url)
+    rjson = json.loads(r.text)
+    pages = rjson['query']['pages']
+    page = pages[pages.keys()[0]]
+    user_name = page['revisions'][0]['user']
+    return user_name  # unicode here
+
+
+def get_weibo_id_by_user_name(user_name):
+    url = queryWeiboId % user_name
+    r = requests.get(url)
+
+    return "a"
 
 
 class UpdateItems(object):
@@ -184,7 +206,7 @@ class UpdateItems(object):
             self.filter_valid()
             self.storeValidItems()
             autoVerifyExpiredItems()
-            cleanDeletedNewItems()
+            cleanDeletedItems()
         except:
             logger.info(traceback.format_exc())
 
@@ -265,8 +287,9 @@ class SendItem(object):
         weiboTitle = self.ItemTobeSend
         weiboLink = "http://zh.moegirl.org/" + \
                     urllib.quote(weiboTitle)
+        last_editor = get_last_editor_name(self.ItemTobeSend)
 
-        self.weiboApi.send(weiboTitle.decode('utf-8'),
+        self.weiboApi.send(weiboTitle.decode('utf-8') + u' by ' + last_editor,
                            weiboLink, getImage(weiboLink))
 
     def postsend(self):
