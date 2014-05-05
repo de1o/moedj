@@ -289,7 +289,7 @@ class SendItem(object):
                     urllib.quote(weiboTitle)
         last_editor = get_last_editor_name(self.ItemTobeSend)
 
-        self.weiboApi.send(u'［' + weiboTitle.decode('utf-8') + u'］ 本条目最后一次编辑由' + last_editor + u'贡献',
+        self.weiboApi.send(u'［' + weiboTitle.decode('utf-8') + u'］ 本条目最新一次编辑由' + last_editor + u'贡献',
                            weiboLink, getImage(weiboLink))
 
     def postsend(self):
