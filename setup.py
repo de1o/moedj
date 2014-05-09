@@ -34,7 +34,7 @@ class PyTest(TestCommand):
 
 setup(
     name='moedj',
-    version='0.5.8',
+    version='0.5.9.1',
     url='https://github.com/deloeating/moedj',
     license='MIT',
     author='delo',

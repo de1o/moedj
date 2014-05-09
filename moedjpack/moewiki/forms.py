@@ -24,7 +24,7 @@ class MPConfigForm(forms.Form):
 
 class ForbiddenForm(forms.Form):
     keywords = forms.CharField(
-        label="请输入屏蔽词", max_length=400,
+        label="请输入屏蔽词，一次可以提交多个词语，每个词语输入后请回车使词语进入候选区，不回车确认的词语不会被提交（！）", max_length=400,
         widget=forms.TextInput(attrs=
                                {'data-role': "tagsinput",
                                 'placeholder': "输入关键词",

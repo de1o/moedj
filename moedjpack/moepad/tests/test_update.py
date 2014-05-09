@@ -29,6 +29,7 @@ def test_filterForbiddenItems():
     rs.sadd(FORBIDDENS, u"R-18".encode('utf-8'))
 
     assert not update.filterForbiddenItems(u"Ahe颜")
+    assert not update.filterForbiddenItems(u'援助交际')
     assert not update.filterForbiddenItems(u"神原骏河")
     assert update.filterForbiddenItems(u"猫物语")
 
