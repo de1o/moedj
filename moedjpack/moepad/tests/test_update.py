@@ -156,6 +156,6 @@ def test_cleanDeletedEditedItems():
 
 
 def test_get_last_editor_name():
-    assert u"红魔狗头人" == update.get_last_editor_name("义妹")
+    assert u"Wyjroshan" == update.get_last_editor_name("义妹")
 
 

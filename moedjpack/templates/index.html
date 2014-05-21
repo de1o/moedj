@@ -8,7 +8,8 @@
 <div class="side_box" id="buttons">
 	<p>进行帐户认证前请确认右边的app key/secret信息已填写正确</p>
 	<a href="/clean_auth/" class="span2 btn funcbtn btn-danger">清除认证信息</a><br/>
-	<a href="/loginSina/original/" class="span2 btn funcbtn btn-primary">新浪发送帐户认证</a><br/>	
+	<a href="/loginSina/original/" class="span2 btn funcbtn btn-primary">新浪发送帐户认证</a><br/>
+	<a href="/loginTencent/" class="span2 btn funcbtn btn-primary">腾讯发送帐户认证</a><br/>
 </div>
 <div class="px20"></div>
 <div class="span6 nice_box" id="config_form">
@@ -27,10 +28,10 @@
 		{{form}}
 		<br>
 		<input class="btn-success btn span1 " type="submit" value="提交"/>
-			
+
 
 		</form>
-<!-- 
+<!--
 		{% for field in field_list %}
 
 		<label for="{{field.input_id}}" class="inlinelabel span2">{{field.field_name}}</label>

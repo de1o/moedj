@@ -11,11 +11,12 @@ import logging
 import traceback
 from BeautifulSoup import BeautifulSoup
 
-from weibowrapper import WeiboApi, WeiboAuthInfoRedis
+from weibowrapper import WeiboApi, WeiboAuthInfoRedis, TencentApi
 from weibo import APIError
 from mputils import rs, loggerInit, utcnow, _deletePrefix, logger
 from mpconf import MPConf
 from mpdefs import *
+
 
 
 def getItemCategories(title):
@@ -270,27 +271,46 @@ class SendItem(object):
             token['access_token'],
             token['expires_in'])
 
+        tencent_oauth_info = rs.hgetall("TencentOauth")
+
+        self.tencentApi = TencentApi(MPConf.TencentAppKey, MPConf.TencentAppSecret,
+                                    MPConf.Domain+'/tencentcallback',
+                                    tencent_oauth_info['access_token'],
+                                    tencent_oauth_info['secret'],
+                                    tencent_oauth_info['expires_in'])
+
+    def prepare(self):
+        """
+        format weibo content
+        """
+        weiboTitle = self.ItemTobeSend
+        last_editor = get_last_editor_name(self.ItemTobeSend)
+
+        self.weibo_content = u'［' + weiboTitle.decode('utf-8') + u'］ 本条目最新一次编辑由' + last_editor + u'贡献'
+        self.weibo_link = "http://zh.moegirl.org/" + \
+                    urllib.quote(weiboTitle)
+        self.img = getImage(self.weibo_link)
+
     def sendRoutine(self):
         if not self.ItemTobeSend:
             return None
         try:
+            self.prepare()
             self.send()
-            self.postsend()
             logger.info("Sending: "+self.ItemTobeSend+" Succ")
-        except APIError as e:
-            if 'expired_token' in e:
-                logger.info("Token已到期，请重新授权")
         except:
             logger.info(traceback.format_exc())
+        finally:
+            self.postsend()
 
     def send(self):
-        weiboTitle = self.ItemTobeSend
-        weiboLink = "http://zh.moegirl.org/" + \
-                    urllib.quote(weiboTitle)
-        last_editor = get_last_editor_name(self.ItemTobeSend)
+        try:
+            self.weiboApi.send(self.weibo_content, self.weibo_link, self.img)
+        except APIError as e:
+            if 'expired_token' in e:
+                logger.info("Sina Weibo Token已到期，请重新授权")
 
-        self.weiboApi.send(u'［' + weiboTitle.decode('utf-8') + u'］ 本条目最新一次编辑由' + last_editor + u'贡献',
-                           weiboLink, getImage(weiboLink))
+        self.tencentApi.send(self.weibo_content, self.weibo_link, self.img)
 
     def postsend(self):
         key = SENT + self.ItemTobeSend

@@ -6,6 +6,7 @@ mpconfig.*
 .idea
 tmp.jpg
 todo.md
+tx_rt
 
 # C extensions
 *.so
