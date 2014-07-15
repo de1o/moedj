@@ -100,6 +100,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'banish.middleware.BanishMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -127,6 +128,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'moedjpack',
+    'banish',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -187,3 +189,15 @@ EMAIL_HOST_USER = 'username'
 EMAIL_HOST_PASSWORD = 'passwd'
 EMAIL_PORT = 587
 EMAIL_SUBJECT_PREFIX = '[MoePad]'
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:12000',
+    }
+}
+
+BANISH_ENABLED = True
+BANISH_EMPTY_UA = True
+BANISH_ABUSE_THRESHOLD = 50

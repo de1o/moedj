@@ -5,3 +5,5 @@ Django>=1.5.1
 pysqlite>=2.6.3
 pytz>=2012d
 celery>=3.1.9
+django-banish==0.2
+python-memcached==1.53
