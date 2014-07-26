@@ -21,7 +21,7 @@ from mpdefs import *
 
 def getItemCategories(title):
     url = queryCategoryUrl % urllib.quote(title.encode('utf-8'))
-    r = requests.get(url)
+    r = requests.post(url)
     rjson = json.loads(r.text)
     pages = rjson['query']['pages']
     key = pages.keys()[0]
@@ -106,7 +106,7 @@ def filterExistedItems(that):
 
 def filterRedirectedItems(that):
     url = queryRedirectUrl % that.encode("utf-8")
-    r = requests.get(url)
+    r = requests.post(url)
     rjson = json.loads(r.text)
     try:
         logger.info("redirected item: %s" % rjson['query']['redirects'][0]['from'].encode('utf-8'))
@@ -136,7 +136,7 @@ def autoVerifyExpiredItems():
 
 def item_deleted(that):
     url = queryIfExistUrl % that.encode('utf-8')
-    r = requests.get(url)
+    r = requests.post(url)
     rjson = json.loads(r.text)
     try:
         rjson['query']['pages']['-1']['missing']
@@ -174,7 +174,7 @@ def getItemTobeSend():
 
 def get_last_editor_name(item):
     url = queryLastRevisionEditor % item
-    r = requests.get(url)
+    r = requests.post(url)
     rjson = json.loads(r.text)
     pages = rjson['query']['pages']
     page = pages[pages.keys()[0]]
@@ -218,7 +218,7 @@ class UpdateItems(object):
         rcend = calendar.timegm(utcnow().utctimetuple())
         url = url_t % (rcstart, rcend)
         print url
-        r = requests.get(url)
+        r = requests.post(url)
         rjson = json.loads(r.text)
         self.rch = rjson['query']['recentchanges']
         self.new_items = [item['title'] for item in self.rch if item['type']
