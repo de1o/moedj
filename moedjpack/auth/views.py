@@ -21,8 +21,6 @@ SinaAppSecret = MPConf.SinaAppSecret
 MoePadSite = MPConf.Domain
 OriWeiboAuth = WeiboAuthInfoRedis("original")
 RtWeiboAuth = WeiboAuthInfoRedis("retweet")
-TencentAppKey = MPConf.TencentAppKey
-TencentAppSecret = MPConf.TencentAppSecret
 
 def authSina(code):
     client = weibo.APIClient(SinaAppKey, SinaAppSecret,
@@ -56,15 +54,6 @@ def authSinaUrl():
     return client.get_authorize_url()
 
 
-def authTencentUrl():
-    auth = qqweibo.OAuthHandler(TencentAppKey, TencentAppSecret, callback=MoePadSite+"/tencentcallback")
-    url = auth.get_authorization_url()
-    f = open('tx_rt', 'wb')
-    f.write(pickle.dumps(auth.request_token))
-    f.close()
-    return url
-
-
 @login_required
 def sinacallback(request):
     code = request.GET['code']
@@ -77,35 +66,6 @@ def sinacallback(request):
 def re_auth_sina(request):
     WeiboAuthObj.clean()
     return redirect(authSinaUrl())
-
-
-@login_required
-def re_auth_tencent(requset):
-    try:
-        WeiboAuth.objects.filter(source='tencent').delete()
-    except:
-        pass
-    return redirect(authTencentUrl())
-
-
-def tencentcallback(request):
-    verifier = request.GET['oauth_verifier']
-    auth = qqweibo.OAuthHandler(TencentAppKey, TencentAppSecret, callback=MoePadSite+"/tencentcallback")
-
-    f = open('tx_rt', 'rb')
-    auth.request_token = pickle.loads(f.read())
-    f.close()
-    access_token = auth.get_access_token(verifier)
-    tencent_data = {
-        "access_token": access_token.key,
-        "secret": access_token.secret,
-        "expires_in": 13000000
-    }
-    tencent_key = "TencentOauth"
-    rs.hmset(tencent_key, tencent_data)
-    rs.expire(tencent_key, tencent_data['expires_in'])
-
-    return HttpResponse("auth info saved")
 
 
 @login_required
@@ -137,7 +97,3 @@ def loginSina(request, user_type):
     rs.set("current_user_type", user_type)
     return redirect(authSinaUrl())
 
-
-@login_required
-def loginTencent(request):
-    return redirect(authTencentUrl())

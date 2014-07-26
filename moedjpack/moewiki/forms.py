@@ -14,10 +14,6 @@ class MPConfigForm(forms.Form):
                                  required=False)
     SinaAppSecret = forms.CharField(label="Sina App Secret:", max_length=100,
                                     required=False)
-    TencentAppKey = forms.CharField(label="Tencent App Key", max_length=100,
-                                    required=False)
-    TencentAppSecret = forms.CharField(label="Tencent App Secret",
-                                       max_length=100, required=False)
     Domain = forms.CharField(label="MoePad程序所在域名 *", max_length=100)
     sameItemInterval = forms.IntegerField(label="同一条目禁止多次发送的间隔(小时) *")
 

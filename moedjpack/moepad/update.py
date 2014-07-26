@@ -11,7 +11,7 @@ import logging
 import traceback
 from BeautifulSoup import BeautifulSoup
 
-from weibowrapper import WeiboApi, WeiboAuthInfoRedis, TencentApi
+from weibowrapper import WeiboApi, WeiboAuthInfoRedis
 from weibo import APIError
 from mputils import rs, loggerInit, utcnow, _deletePrefix, logger
 from mpconf import MPConf
@@ -271,13 +271,6 @@ class SendItem(object):
             token['access_token'],
             token['expires_in'])
 
-        tencent_oauth_info = rs.hgetall("TencentOauth")
-
-        self.tencentApi = TencentApi(MPConf.TencentAppKey, MPConf.TencentAppSecret,
-                                    MPConf.Domain+'/tencentcallback',
-                                    tencent_oauth_info['access_token'],
-                                    tencent_oauth_info['secret'],
-                                    tencent_oauth_info['expires_in'])
 
     def prepare(self):
         """
@@ -309,8 +302,6 @@ class SendItem(object):
         except APIError as e:
             if 'expired_token' in e:
                 logger.info("Sina Weibo Token已到期，请重新授权")
-
-        self.tencentApi.send(self.weibo_content, self.weibo_link, self.img)
 
     def postsend(self):
         key = SENT + self.ItemTobeSend

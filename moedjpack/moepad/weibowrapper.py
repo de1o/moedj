@@ -6,7 +6,6 @@
 # @Last modified by:   delo
 # @Last modified time: 2014-02-19 23:44:23
 import weibo
-from moedjpack import qqweibo
 from mputils import sub_dict, rs
 
 
@@ -29,20 +28,6 @@ class WeiboApi(object):
             r = self.client.statuses.update.post(status=text)
 
 
-class TencentApi(object):
-    def __init__(self, appkey, appsecret, callback, token, token_secret, expires_in):
-        auth = qqweibo.OAuthHandler(appkey, appsecret, callback)
-        auth.setToken(token, token_secret)
-        self.client = qqweibo.API(auth, parser=qqweibo.ModelParser())
-
-    def send(self, text, url, img=None):
-        tweet = text+' '+url
-        if not img:
-            self.client.tweet.add(tweet, clientip='127.0.0.1')
-        with open('tmp.jpg', 'rb') as fpic:
-            self.client.tweet.addpic(fpic, tweet, clientip='127.0.0.1')
-
-
 class WeiboAuthInfo(object):
     def __init__(self, user_type):
         super(WeiboAuthInfo, self).__init__()
@@ -57,7 +42,7 @@ class WeiboAuthInfo(object):
         for key in args.keys():
             setattr(self, key, args[key])
 
-    def load():
+    def load(self):
         pass
 
     def save(self):

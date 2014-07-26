@@ -74,24 +74,3 @@ def forbidden_item(request, item):
     return HttpResponse(json.dumps({"status": status}),
                         content_type="application/json")
 
-
-# def verify(request):
-#     if request.method == 'POST':
-#         print request.POST
-#         for key in request.POST.keys():
-#             if 'on' in request.POST[key]:
-#                 RecentUpdateItems.objects.filter(title=key).update(
-#                     itemState=RecentUpdateItems.VERIFIED)
-
-#         return generateUnverifiedPage(request)
-#     else:
-#         return generateUnverifiedPage(request)
-
-
-# def generateUnverifiedPage(request):
-#     unverified_items_rec = RecentUpdateItems.objects.filter(
-#         itemState=RecentUpdateItems.VERIFYING_NEW)
-#     unverified_items = [rec.title.encode('utf-8')
-#                         for rec in unverified_items_rec]
-#     c = RequestContext(request, {"unverified_items": unverified_items})
-#     return render_to_response('verify.html', c)

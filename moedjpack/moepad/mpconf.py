@@ -27,8 +27,6 @@ class MpConfigRedisHandler(MpConfig):
     def getConfig(self):
         self.SinaAppKey = ""
         self.SinaAppSecret = ""
-        self.TencentAppKey = ""
-        self.TencentAppSecret = ""
         self.Domain = ""
         self.sameItemInterval = 24
         confdict = rs.hgetall(MoePadConfKey)
