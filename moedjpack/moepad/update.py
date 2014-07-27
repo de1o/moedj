@@ -279,7 +279,7 @@ class SendItem(object):
         weiboTitle = self.ItemTobeSend
         last_editor = get_last_editor_name(self.ItemTobeSend)
 
-        self.weibo_content = u'［' + weiboTitle.decode('utf-8') + u'］ 本条目最新一次编辑由' + last_editor + u'贡献'
+        self.weibo_content = weiboTitle.decode('utf-8')
         self.weibo_link = "http://zh.moegirl.org/" + \
                     urllib.quote(weiboTitle)
         self.img = getImage(self.weibo_link)
